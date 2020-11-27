@@ -127,6 +127,15 @@ colonyThreshold <- function(dir=getwd(), fileFormat="jpg", files=list.files(path
     grid.save <- NULL
   }
   
+  #Set new version of .regester2d in gitter. Put old version back on exit
+  #This will alter the way gitter::gitter.back processes the images and provide more stability by removing the ability to re-align the grid
+  .register2dOld <- gitter:::.register2d
+  utils::assignInNamespace(".register2d", .register2d, "gitter")
+  on.exit({
+    .register2d <- .register2dOld
+    utils::assignInNamespace(".register2d", .register2d, "gitter")
+  }, add = T)
+  
   #Run the gitter analysis
   gitter::gitter.batch(files, reference, verbose=verbose, plate.format=plate.format, grid.save=grid.save, dat.save=dir.output, remove.noise=remove.noise, autorotate=autorotate, inverse=inverse, contrast=contrast)
   
