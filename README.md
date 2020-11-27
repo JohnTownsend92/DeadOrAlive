@@ -1,16 +1,11 @@
----
-output: github_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 # DeadOrAlive
+
 Analysis of High-throughput Colony Forming Unit Assays
 
 ## Installation
-```{r eval=FALSE}
+
+``` r
 install.packages("adimpro")
 package <- "https://cran.r-project.org/src/contrib/Archive/PET/PET_0.5.1.tar.gz"
 fileLocation <- tempfile()
@@ -29,6 +24,7 @@ devtools::install_github("JohnTownsend92/DeadOrAlive")
 ```
 
 ## Tutorial
-```{r eval=FALSE}
+
+``` r
 vignette("DeadOrAliveVignette", package="DeadOrAlive")
 ```
