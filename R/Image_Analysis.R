@@ -246,6 +246,7 @@ colonyThreshold <- function(dir=getwd(), fileFormat="jpg", files=list.files(path
       
       #Read in the raw image of the plate
       plateImage <- magick::image_read(files[i])
+      plateImage <- magick::image_colorize(plateImage, 0, "white")
       
       #If image is not already inverted, invert it
       if(inverse==F) {
