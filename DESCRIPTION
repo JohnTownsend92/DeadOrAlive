@@ -1,0 +1,14 @@
+Package: DeadOrAlive
+Type: Package
+Title: Analysis of High-throughput Chronological Lifespan Experiments
+Version: 1.0.0
+Date: 2020-07-14
+Author: StJohn Townsend, Olivia Hillson
+Maintainer: StJohn Townsend <stjohn.townsend.11@ucl.ac.uk>
+Description: Tools for the analysis and interpretation of high-throughput chronological lifespan experiments. Contains functions for plate image analysis, data restructuring, viability estimation via maximum likelihood estimation and plotting utility functions.
+License: LGPL
+Imports: gitter, zoo, magick, gplots, RColorBrewer, rmarkdown, toOrdinal, cobs, rootSolve, ggplot2
+RoxygenNote: 7.1.1
+Suggests: 
+    knitr
+VignetteBuilder: knitr

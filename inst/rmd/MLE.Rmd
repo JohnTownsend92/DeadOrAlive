@@ -1,0 +1,160 @@
+---
+title: "Maximum Likelihood Estimation of Cell Viability"
+output:
+  html_document:
+    fig_width: 11
+    fig_height: 7
+---
+
+***
+`r Sys.time()`
+<br><br>
+This report contains plots showing the maximum likelihood estimation of the number of viable cells per droplet for each viability measurement, based on the pattern or present of absent colonies from the uploaded plates.
+<br><br>
+**Figure A** shows the likelihood function. Blue dashed lines indicate the maximum likelihood, and red dashed lines show the bounds of the confidence interval for the desired probability.
+<br><br>
+**Figure B** shows the expected number of cells per droplet at each dilution based on the maximum likelihood estimate. The shaded green area shows the expected informative region - i.e. the region in which there is reasonably probability that some positions will contain a colony and some will not.
+<br><br>
+**Figure C** shows the pattern of observed colonies. The blue line indicates the expected distribution based on the maximum likelihood estimate - it is particularly critical that this is checked to see whether the line fitted matches the real data.
+<br><br>
+**Figure D** shows the likelihoods of observing each particular data point (i.e. the number of colonies observed at a particular dilution) for the maximum likelihood estimate. The red dashed line show the tolerance. If there any data points for which the probability of observing them is less than the tolerance, then it is assumed that something has gone wrong. In this case, the most troublesome data point will be excluded, and the maximum likelihood estimation will be performed again.
+<br><br>
+
+```{r echo=FALSE, results="asis"}
+#Get copies of arguments and results from the parent environment
+sampleMASTER <- get("sample", envir = parent.env(environment()))
+timeMASTER <- get("time", envir = parent.env(environment()))
+gridMASTER <- get("grid", envir = parent.env(environment()))
+ViabilityMASTER <- get("Viability", envir = parent.env(environment()))
+for(i in 1:length(sampleMASTER)) {
+  
+  #Get the appropriate series of values
+  totalExcluded <- length(unlist(strsplit(ViabilityMASTER$ExcludedWellPositions[i], ", "))) + length(unlist(strsplit(ViabilityMASTER$ExcludedGridPositions[i], ", ")))
+  sample <- sampleMASTER[i]
+  time <- timeMASTER[i]
+  grid <- gridMASTER[i]
+  
+  for(j in 1:(totalExcluded+1)) {
+    
+    values <- get(paste0(sample, ".", time, ".", j), envir=snapshotEnvir)
+    
+    Likelihoods <- values$Likelihoods
+    bestEstimate <- values$bestEstimate
+    maxLikelihood <- values$maxLikelihood
+    loglikelihoodCutOff <- values$loglikelihoodCutOff
+    CI <- values$CI
+    expectedCells <- values$expectedCells
+    expectedProportion <- values$expectedProportion
+    informativeRegion <- values$informativeRegion
+    colonies2plot <- values$colonies2plot
+    grid2plot <- values$grid2plot
+    probReal <- values$probReal
+    excludedPositions <- values$excludedPositions
+    excludedGridPositions <- values$excludedGridPositions
+    exclusionOrder <- values$exclusionOrder
+    
+    #Produce sample name
+    cat("  \n")
+    if(totalExcluded == 0) {
+      cat("### Sample: ", sample, ", Time: ", time, ":  \n", sep="")
+    } else {
+      if(j != totalExcluded + 1) {
+        cat("### Sample: ", sample, ", Time: ", time, " - Attempt ", j, " (Failed):  \n", sep="")
+      } else {
+        cat("### Sample: ", sample, ", Time ", time, " - Attempt ", j, " (Successful):  \n", sep="")
+      }
+    }
+    
+    #Provide some text about the MLE
+    cat("  \n")
+    cat("  \n")
+    cat("Observed pattern of colonies: ")
+    cat(compactColonies(colonies2plot, grid), sep=", ")
+    cat("  \n")
+    cat("Size of grid: ")
+    cat(grid2plot)
+    cat("  \n")
+    cat("Maximum likelihood estimation of number of viable cells per droplet: ", signif(bestEstimate, 3), sep="")
+    if(totalExcluded>0 & j != totalExcluded + 1) {
+      cat("  \n")
+      cat("Solution to be tried on the next attempt: exclusion of the ")
+      exclusionText <- ifelse(exclusionOrder[j]==1,
+      paste0(toOrdinal::toOrdinal(excludedPositions[length(which(exclusionOrder==1))]), " dilution factor."), paste0(toOrdinal::toOrdinal(excludedGridPositions[length(which(exclusionOrder==0))]), " grid position"))
+      cat(exclusionText)
+    }
+    cat("  \n")
+    
+    #Set up plots
+    par(mar=c(5, 5, 2, 2), mfrow=c(2,2))
+    
+    #Plot the likelihood
+    plot(
+      cellsPerDropletValues,
+      log(Likelihoods),
+      log="x",
+      ylim=c(log(maxLikelihood) - 10, log(maxLikelihood)),
+      xlab="Number of live cells per\ndroplet for undiluted culture",
+      ylab="Loglikelihood",
+      cex=0
+    )
+    lines(cellsPerDropletValues, log(Likelihoods))
+    abline(h=log(max(Likelihoods), 10), col="Blue", lty="longdash")
+    abline(v=bestEstimate, col="Blue", lty="longdash")
+    abline(h=loglikelihoodCutOff, col="Red", lty="longdash")
+    abline(v=CI[1], col="Red", lty="longdash")
+    abline(v=CI[2], col="Red", lty="longdash")
+    mtext("A", side=3, adj=-0.16, line=-1.5, cex=1.5, font=2)
+    
+    #Plot the expected number of cells per droplet for each grid position based on the MLE
+    plot(
+      expectedCells,
+      xaxt="n",
+      xlab="Dilution Factor",
+      ylab="Expected number\nof cells per droplet",
+      ylim=c(0,10)
+    )
+    axesLabel(colonyLength, dilution)
+    if(length(informativeRegion)>1) {
+      rect(
+        min(informativeRegion),
+        -1,
+        max(informativeRegion),
+        11,
+        col="lightgreen",
+        lty="longdash"
+      )
+    }
+    points(expectedCells)
+    lines(expectedCells, col="Red")
+    mtext("B", side=3, adj=-0.16, line=-1.5, cex=1.5, font=2)
+    
+    #Plot the number of grid positions filled for each row of the plate, and the expected number based on the maximum likelihood estimation
+    plot(
+      compactColonies(colonies2plot, grid),
+      xaxt="n",
+      xlab="Dilution Factor",
+      ylab="Number of colonies\nin each grid posiiton",
+      ylim=c(0,grid)
+    )
+    axesLabel(colonyLength, dilution)
+    lines(grid2plot*(expectedProportion), col="Blue", lwd=2)
+    mtext("C", side=3, adj=-0.16, line=-1.5, cex=1.5, font=2)
+    
+    #Plot the likelihood of observing each individual grid position pattern
+    plot(
+      log(probReal),
+      xaxt="n",
+      ylim=c(log(min(c(probReal, tolerance), na.rm=T)), 0),
+      xlab="Dilution Factor",
+      ylab="Loglikelihood"
+    )
+    axesLabel(colonyLength, dilution)
+    abline(h=log(tolerance), col="Red", lty="longdash")
+    mtext("D", side=3, adj=-0.16, line=-1.5, cex=1.5, font=2)
+    
+    cat("<br><br>  \n")
+    
+  }
+  
+}
+```
