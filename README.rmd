@@ -38,7 +38,7 @@ library(ggplot2)
 This tutorial will teach you how to analyse high-throughput colony forming unit (CFU) assay data as described in Romila et al., 2021. This assay facilitates high-throughput chronological lifespan (CLS) studies in microorganisms such as *Saccharomyces cerevisiae* or *Schizosaccharomyces pombe* by using robotics to automate CFU plating in a highly parallelisable manner (Figure 1).
 
 ```{r out.width="100%", echo=FALSE}
-knitr::include_graphics("vignette/Robots.png")
+knitr::include_graphics("vignettes/Robots.png")
 ```
 
 **Figure 1**: Schematic depiction of experimental protocol.
@@ -48,7 +48,7 @@ knitr::include_graphics("vignette/Robots.png")
 In order to estimate the number of colony forming units for a particular sample, the pattern of colonies must first be analysed. `colonyThreshold()` will take a batch of images of agar plates and identify whether or not there is a colony in each position. For this, it is critical to provide a reference image to aid colony identification in sparsely populated regions of the plate (Figure 2A).
 
 ```{r out.width="100%", echo=FALSE}
-knitr::include_graphics("vignette/Plates.png")
+knitr::include_graphics("vignettes/Plates.png")
 ```
 **Figure 2**: Outline of image analysis pipeline.
 
