@@ -58,7 +58,7 @@ solveProxy <- function(fit, maxTime, viability) {
 #'require(ggplot2)
 #'g2 <- g2 <- ggplot(CFUsMLE, aes(Time, ColonyFormingUnitsPerDroplet + 1, group=Sample, color=Proxy))
 #'g2 <- g2 + geom_point() + geom_line()
-#'g2 <- g2 +  scale_y_log10() + xlab("Time / days") + ylab("CFUs / droplet + 1")
+#'g2 <- g2 +  scale_y_log10() + xlab("Time (days)") + ylab("CFUs / droplet + 1")
 #'print(g2)
 calculateProxy <- function(CFUsMLE, maxTime=max(CFUsMLE$Time), viability=0.05, constraint="decrease", ...) {
   
@@ -142,7 +142,7 @@ plotProxy <- function(CFUsMLE, Sample, maxTime=max(CFUsMLE$Time), viability=0.05
   
   #Plot CFUs
   g <- ggplot2::ggplot(CFUsMLEsub, ggplot2::aes(Time, ColonyFormingUnitsPerDroplet)) + ggplot2::geom_point()
-  g <- g + ggplot2::xlab("Time / days") + ggplot2::ylab("CFUs / droplet + 1") + ggplot2::scale_y_log10()
+  g <- g + ggplot2::xlab("Time (days)") + ggplot2::ylab("CFUs / droplet + 1") + ggplot2::scale_y_log10()
   
   #Add line for  cobs fit
   fittedValues <- as.data.frame(stats::predict(fit, seq(from=0, to=maxTime, by=0.01)))
