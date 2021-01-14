@@ -148,6 +148,6 @@ CFUsMLE$Proxy <- proxy$Proxy[match(CFUsMLE$Sample, proxy$Sample)]
 #Plot all lifespan curves and color by proxy
 g2 <- g2 <- ggplot(CFUsMLE, aes(Time, ColonyFormingUnitsPerDroplet + 1, group=Sample, color=Proxy))
 g2 <- g2 + geom_point() + geom_line()
-g2 <- g2 +  scale_y_log10() + xlab("Time (days)") + ylab("CFUs / droplet + 1")
+g2 <- g2 +  scale_y_log10() + xlab("Time (days)") + ylab("CFUs / droplet + 1") + scale_color_viridis_c()
 print(g2)
 ```
