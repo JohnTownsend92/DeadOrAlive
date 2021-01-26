@@ -1,7 +1,5 @@
-
-# DeadOrAlive
-
-Analysis of High-throughput Colony Forming Unit Assays
+DeadOrAlive: Analysis of High-throughput Colony Forming Units Assays
+================
 
 ## Installation
 

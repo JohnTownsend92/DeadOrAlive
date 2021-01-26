@@ -1,13 +1,11 @@
 ---
+title: "DeadOrAlive: Analysis of High-throughput Colony Forming Units Assays"
 output: github_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-# DeadOrAlive
-Analysis of High-throughput Colony Forming Unit Assays
 
 ## Installation
 ```{r eval=FALSE}
