@@ -12,12 +12,9 @@ install.packages(fileLocation, type="source", repos=NULL)
 install.packages("BiocManager")
 BiocManager::install("EBImage")
 install.packages(c("jpeg", "tiff", "logging", "ggplot2"))
-package <- "https://cran.r-project.org/src/contrib/Archive/gitter/gitter_1.1.1.tar.gz"
-fileLocation <- tempfile()
-download.file(package, fileLocation)
-install.packages(fileLocation, type="source", repos=NULL)
-install.packages(c("zoo", "magick", "gplots", "RColorBrewer", "rmarkdown", "toOrdinal", "cobs", "rootSolve"))
 install.packages("devtools")
+devtools::install_github('omarwagih/gitter')
+install.packages(c("zoo", "magick", "gplots", "RColorBrewer", "rmarkdown", "toOrdinal", "cobs", "rootSolve"))
 devtools::install_github("JohnTownsend92/DeadOrAlive", build_vignettes=TRUE)
 ```
 
@@ -29,9 +26,10 @@ library(ggplot2)
 ```
 
 This tutorial will teach you how to analyse high-throughput colony
-forming unit (CFU) assay data as described in Romila et al., 2021. This
-assay facilitates high-throughput chronological lifespan (CLS) studies
-in microorganisms such as *Saccharomyces cerevisiae* or
+forming unit (CFU) assay data as described in [Romila et
+al., 2021](https://microbialcell.com/wordpress/wp-content/uploads/2021A-Romila-Microbial-Cell-Advanced-Pub.pdf).
+This assay facilitates high-throughput chronological lifespan (CLS)
+studies in microorganisms such as *Saccharomyces cerevisiae* or
 *Schizosaccharomyces pombe* by using robotics to automate CFU plating in
 a highly parallelisable manner (Figure 1).
 
@@ -57,29 +55,29 @@ the image analysis. As such, all of the arguments used by `gitter()` are
 available in the `colonyThreshold()` function. Of particular importance
 are:
 
--   `plate.format` – the format of the agar plate
--   `well.plate.format` – the format of the plate used for serial
+  - `plate.format` – the format of the agar plate
+  - `well.plate.format` – the format of the plate used for serial
     dilutions
--   `inverse` – have colours in the image been inverted? For example,
+  - `inverse` – have colours in the image been inverted? For example,
     when a scanner is used to take images of the plate, the colonies
     will appear darker than the background
 
 `colonyThreshold()` does not return any objects, but instead creates up
 to 4 files for each raw image processed (Figure 2B). These are:
 
--   **DAT file** A tab delimited file containing quantified colony
+  - **DAT file** A tab delimited file containing quantified colony
     sizes, as described in
     [gitter](http://omarwagih.github.io/gitter/#gettingstarted). A sixth
     column marking whether a colony has been classified as present (1)
     or absent (0) is added
--   **Gridded image** Image showing colony identification by aligning
+  - **Gridded image** Image showing colony identification by aligning
     colonies to the grid identified in the reference image, as described
     in [gitter](http://omarwagih.github.io/gitter/#gettingstarted)
     (Figure 2C)
--   **Threshold image** Image showing whether a colony has been
+  - **Threshold image** Image showing whether a colony has been
     classified as present or absent for each position on the plate
     (Figure 2D)
--   **Count image** Image showing how many colonies have been classified
+  - **Count image** Image showing how many colonies have been classified
     as present for each sample at each dilution factor (Figure 2E)
 
 It is particularly important to manually check the **threshold image**

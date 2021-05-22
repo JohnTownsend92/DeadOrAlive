@@ -17,12 +17,9 @@ install.packages(fileLocation, type="source", repos=NULL)
 install.packages("BiocManager")
 BiocManager::install("EBImage")
 install.packages(c("jpeg", "tiff", "logging", "ggplot2"))
-package <- "https://cran.r-project.org/src/contrib/Archive/gitter/gitter_1.1.1.tar.gz"
-fileLocation <- tempfile()
-download.file(package, fileLocation)
-install.packages(fileLocation, type="source", repos=NULL)
-install.packages(c("zoo", "magick", "gplots", "RColorBrewer", "rmarkdown", "toOrdinal", "cobs", "rootSolve"))
 install.packages("devtools")
+devtools::install_github('omarwagih/gitter')
+install.packages(c("zoo", "magick", "gplots", "RColorBrewer", "rmarkdown", "toOrdinal", "cobs", "rootSolve"))
 devtools::install_github("JohnTownsend92/DeadOrAlive", build_vignettes=TRUE)
 ```
 
@@ -33,7 +30,7 @@ library(DeadOrAlive)
 library(ggplot2)
 ```
 
-This tutorial will teach you how to analyse high-throughput colony forming unit (CFU) assay data as described in Romila et al., 2021. This assay facilitates high-throughput chronological lifespan (CLS) studies in microorganisms such as *Saccharomyces cerevisiae* or *Schizosaccharomyces pombe* by using robotics to automate CFU plating in a highly parallelisable manner (Figure 1).
+This tutorial will teach you how to analyse high-throughput colony forming unit (CFU) assay data as described in [Romila et al., 2021](https://microbialcell.com/wordpress/wp-content/uploads/2021A-Romila-Microbial-Cell-Advanced-Pub.pdf). This assay facilitates high-throughput chronological lifespan (CLS) studies in microorganisms such as *Saccharomyces cerevisiae* or *Schizosaccharomyces pombe* by using robotics to automate CFU plating in a highly parallelisable manner (Figure 1).
 
 ```{r out.width="100%", echo=FALSE}
 knitr::include_graphics("vignettes/Robots.png")
