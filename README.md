@@ -25,9 +25,12 @@ library(DeadOrAlive)
 library(ggplot2)
 ```
 
+    ## Warning: replacing previous import 'vctrs::data_frame' by 'tibble::data_frame'
+    ## when loading 'dplyr'
+
 This tutorial will teach you how to analyse high-throughput colony
 forming unit (CFU) assay data as described in [Romila et
-al., 2021](https://microbialcell.com/wordpress/wp-content/uploads/2021A-Romila-Microbial-Cell-Advanced-Pub.pdf).
+al., 2021](https://microbialcell.com/researcharticles/2021a-romila-microbial-cell/).
 This assay facilitates high-throughput chronological lifespan (CLS)
 studies in microorganisms such as *Saccharomyces cerevisiae* or
 *Schizosaccharomyces pombe* by using robotics to automate CFU plating in
